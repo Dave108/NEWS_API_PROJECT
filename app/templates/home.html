@@ -10,68 +10,120 @@
 
     <title>NEWS - HOME</title>
   </head>
-  <body>
+  <body style="background-color: #e3e8e1;">
+<!--  navbar-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand font-weight-bold" href="{% url 'news_homepage' %}">WORLD NEWS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse " id="navbarSupportedContent">
+      <form class="form-inline my-2 my-lg-0" action="" method="POST" style="margin: 0 0 0 10%;">
+        {% csrf_token%}
+        <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search News" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="?action=world">World</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="?action=india">India</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="?action=usa">USA</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="?action=europe">Europe</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="?action=middle+east">Middle East</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="?action=china">China</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="?action=japan">Japan</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="?action=east+asia">East Asia</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
   <div class="container" >
     <br>
-    <h1 class="text-center text-primary"><b>WORLD NEWS</b></h1>
-    <div class="container" >
+    {% if topic %}
+    <h1 class="text-center text-warning text-uppercase"><b>{{topic}}</b></h1>
+    {% else %}
+    <h1 class="text-center text-warning"><b>WORLD NEWS</b></h1>
+    {% endif %}
 
-      <form action="" method="POST">
-        {% csrf_token%}
-        <input type="text" placeholder="Search News" name="search" class="form-control w-50 p-3">
-        <br>
-        <input type="submit" value="SEARCH" class="btn btn-sm btn-warning">
-      </form>
-    </div>
+<!--    <div class="container" >-->
+
+<!--      <form action="" method="POST">-->
+<!--        {% csrf_token%}-->
+<!--        <input type="text" placeholder="Search News" name="search" class="form-control w-50 p-3">-->
+<!--        <br>-->
+<!--        <input type="submit" value="SEARCH" class="btn btn-sm btn-warning">-->
+<!--      </form>-->
+<!--    </div>-->
     <br>
     <br>
 <!--    --------------------- -->
     <div class="container">
+      {% if topic %}
+      <p class="text-capitalize font-italic">You Searched For "{{topic}}"</p>
+      {% endif %}
 
       {% if status == "ok" %}
         {% if not total_results == 0 %}
-      <p><em><small>Totl results found: {{total_results}}</small></em></p>
+
+          <div class="mx-auto" style="width:80%;">
+            <p class="text-right"><em><small class="bg-success">Total results found: {{total_results}}</small></em></p>
 
 
-
-
-          <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-              {% for data in articles %}
-              <div class="carousel-item {% if data == articles.0 %} active {% endif %}">
-                <img class="d-block w-100" src="{{data.urlToImage}}">
-                <div class="carousel-caption d-none d-md-block">
-                  <a href="{{data.url}}" class="text-white" style="text-decoration:none;">
-                    <h5>{{data.title}}</h5>
-                    <p>{{data.description}}</p>
-                    <small>{{data.publishedAt}}</small>
-                  </a>
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+              <div class="carousel-inner">
+                {% for data in articles %}
+                <div class="carousel-item {% if data == articles.0 %} active {% endif %}">
+                  <img class="d-block w-100" src="{{data.urlToImage}}">
+                  <div class="carousel-caption d-none d-md-block">
+                    <a href="{{data.url}}" class="text-white" style="text-decoration:none;">
+                      <h5>{{data.title}}</h5>
+                      <p>{{data.description}}</p>
+                      <small>{{data.publishedAt}}</small>
+                    </a>
+                  </div>
                 </div>
+                {% endfor %}
               </div>
-              {% endfor %}
+              <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+              </a>
             </div>
-            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="sr-only">Next</span>
-            </a>
           </div>
+
           <hr>
           <div class="container mx-auto">
             <div class="row mx-auto">
               {% for data in articles %}
               <div class="col-sm-3 mx-auto">
                 <div class="card mx-auto">
-                  <img src="{{data.urlToImage}}" alt="artcle image" >
+                  <img src="{{data.urlToImage}}" alt="artcle image">
                   <div class="card-body">
                     <h6 class="card-title">{{data.title}}</h6>
                     {% if not data.author == None %}
-                    <small>Author - {{data.author}}</small>
+                    <small>Author - {{data.author}}</small><br>
                     {% else %}
-                    <small>Author - Not Available</small>
+                    <small>Author - Not Available</small><br>
                     {% endif %}
                     <small>{{data.publishedAt}}</small>
                     <p class="card-text">{{data.description|slice:":100"}}...</p>
