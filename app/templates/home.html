@@ -90,7 +90,7 @@
                 {% for data in articles %}
                 <div class="carousel-item {% if data == articles.0 %} active {% endif %}">
                   <img class="d-block w-100" src="{{data.urlToImage}}">
-                  <div class="carousel-caption d-none d-md-block">
+                  <div class="carousel-caption d-none d-md-block" style="background: rgba(0, 0, 0, 0.4);">
                     <a href="{{data.url}}" class="text-white" style="text-decoration:none;">
                       <h5>{{data.title}}</h5>
                       <p>{{data.description}}</p>
